@@ -3,7 +3,7 @@ import DashboradActionButtons from "@/components/dashboard/dashborad-action-butt
 
 function Dashboard() {
   return (
-    <div className="p-2">
+    <div className="w-full max-w-6xl mx-auto">
       <DashboardDisplay />
       <DashboradActionButtons />
     </div>

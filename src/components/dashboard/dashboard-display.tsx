@@ -18,7 +18,7 @@ function DashboardDisplay() {
   const { selected, setSelected } = useDashboardToggle();
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4">
+    <div className="p-4">
       <h2 className="text-2xl font-bold mb-4 text-center">Test Dashboard</h2>
       <div className="flex flex-wrap gap-3 my-6">
         {toggleOptions.map((option) => (
