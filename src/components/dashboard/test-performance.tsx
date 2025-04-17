@@ -28,7 +28,7 @@ function TestPerformance() {
   }, [performance, subject]);
 
   return (
-    <div className="w-full h-max border p-4 rounded-xl">
+    <div>
       <div className="flex gap-4 mb-4">
         <select
           value={performance}
@@ -54,7 +54,7 @@ function TestPerformance() {
         </select>
       </div>
 
-      <div className="h-[400px]">
+      <div className="w-full h-[450px]">
         {chartData ? (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>

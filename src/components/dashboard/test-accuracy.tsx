@@ -45,7 +45,7 @@ export default function TestAccuracy() {
   const displayed = filter === "All" ? subjects : [filter];
 
   return (
-    <div className="w-full h-max border p-4 rounded-xl">
+    <div>
       <div className="mb-4">
         <select
           value={filter}
@@ -61,38 +61,40 @@ export default function TestAccuracy() {
         </select>
       </div>
 
-      {chartData.length ? (
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="testCode" />
-            <YAxis domain={[0, 100]} tickFormatter={(val) => `${val}%`} />
-            <Tooltip
-              contentStyle={{
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "rgba(10, 10, 10, 0.8)",
-                borderRadius: "12px",
-              }}
-              formatter={(value) => `${value}%`}
-            />
-            <Legend />
-            {displayed.map((subject) => (
-              <Line
-                key={subject}
-                dataKey={subject}
-                type="monotone"
-                stroke={getSubjectColor(subject)}
-                strokeWidth={2}
-                dot={{ r: 3 }}
-                activeDot={{ r: 5 }}
+      <div className="h-[400px]">
+        {chartData.length ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="testCode" />
+              <YAxis domain={[0, 100]} tickFormatter={(val) => `${val}%`} />
+              <Tooltip
+                contentStyle={{
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "rgba(10, 10, 10, 0.8)",
+                  borderRadius: "12px",
+                }}
+                formatter={(value) => `${value}%`}
               />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      ) : (
-        "Loading chart data..."
-      )}
+              <Legend />
+              {displayed.map((subject) => (
+                <Line
+                  key={subject}
+                  dataKey={subject}
+                  type="monotone"
+                  stroke={getSubjectColor(subject)}
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          "Loading chart data..."
+        )}
+      </div>
     </div>
   );
 }

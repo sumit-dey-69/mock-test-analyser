@@ -37,7 +37,7 @@ function DashboardDisplay() {
         ))}
       </div>
 
-      <div>
+      <div className="border px-4 py-4 rounded-xl">
         {toggleOptions.find((option) => option.name === selected)?.component}
       </div>
     </div>

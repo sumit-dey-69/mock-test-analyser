@@ -41,7 +41,7 @@ export default function TestTimeSpent() {
   }, []);
 
   return (
-    <div className="w-full h-max border p-4 rounded-xl">
+    <div className="w-full h-[400px]">
       {chartData.length > 0 ? (
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>

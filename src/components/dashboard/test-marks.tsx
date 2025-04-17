@@ -32,7 +32,7 @@ export default function TestMarks() {
   }, [selectedSubject]);
 
   return (
-    <div className="w-full h-max border p-4 rounded-xl">
+    <div>
       <div className="mb-4">
         <select
           value={selectedSubject}
@@ -46,35 +46,38 @@ export default function TestMarks() {
           <option value="generalEnglish">General English</option>
         </select>
       </div>
-      {chartData.length > 0 ? (
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="testCode" />
-            <YAxis domain={[0, 1000]} />
-            <Tooltip
-              contentStyle={{
-                color: "white",
-                fontStyle: "bold",
-                backgroundColor: "rgba(10, 10, 10, 0.8)",
-                borderRadius: "20px",
-              }}
-              formatter={(value: number) => `${value}`}
-            />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="marks"
-              stroke="#6366f1"
-              strokeWidth={2}
-              dot={{ r: 4 }}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      ) : (
-        "Loading chart..."
-      )}
+
+      <div className="w-full h-[450px]">
+        {chartData.length > 0 ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="testCode" />
+              <YAxis domain={[0, 1000]} />
+              <Tooltip
+                contentStyle={{
+                  color: "white",
+                  fontStyle: "bold",
+                  backgroundColor: "rgba(10, 10, 10, 0.8)",
+                  borderRadius: "20px",
+                }}
+                formatter={(value: number) => `${value}`}
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="marks"
+                stroke="#6366f1"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          "Loading chart..."
+        )}
+      </div>
     </div>
   );
 }
