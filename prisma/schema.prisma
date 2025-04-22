@@ -8,20 +8,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model Test {
+//   testCode  String    @id
+//   subjects  Subject[]
+//   createdAt DateTime  @default(now())
+// }
+
+// model Subject {
+//   id          Int     @id @default(autoincrement())
+//   questionNo  Int
+//   subject     String
+//   time_spent  String
+//   performance String
+//   remark      String?
+
+//   testCode String
+//   test    Test   @relation(fields: [testCode], references: [testCode], onDelete: Cascade)
+// }
+
 model Test {
-  testCode  String    @id
-  subjects  Subject[]
-  createdAt DateTime  @default(now())
+  name              String @id
+  testTotalDuration Int
+
+  filters   Filters? @relation(fields: [filtersId], references: [id])
+  filtersId String?  @unique
+
+  sectionWiseStats SectionWiseStat[]
+  sections         Section[]
+  createdAt        DateTime          @default(now())
 }
 
-model Subject {
-  id          Int     @id @default(autoincrement())
-  questionNo  Int
-  subject     String
-  time_spent  String
-  performance String
-  remark      String?
+model Filters {
+  id          String @id @default(cuid())
+  incorrect   Int
+  correct     Int
+  unattempted Int
 
-  testCode String
-  test    Test   @relation(fields: [testCode], references: [testCode], onDelete: Cascade)
+  test Test?
+}
+
+model SectionWiseStat {
+  id     String @id @default(cuid())
+  test   Test   @relation(fields: [testId], references: [name])
+  testId String
+
+  marksScored      Float
+  sectionMarks     Float
+  accuracy         Float
+  totalQuestions   Int
+  attemptDuration  Float
+  correctAnswers   Int
+  inCorrectAnswers Int
+  unAttempted      Int
+  name             String
+  order            Int
+  sectionDuration  Float
+}
+
+model Section {
+  id     String @id @default(cuid())
+  test   Test   @relation(fields: [testId], references: [name])
+  testId String
+
+  sectionDuration Float
+  sectionMarks    Float
+  name            String
+  order           Int
+
+  questions Question[]
+}
+
+model Question {
+  id        String  @id @default(cuid())
+  section   Section @relation(fields: [sectionId], references: [id])
+  sectionId String
+
+  order       Int
+  isAttempted Boolean
+  isCorrect   Boolean
+  timeTaken   Float
+
+  marks   Marks?  @relation(fields: [marksId], references: [id])
+  marksId String? @unique
+}
+
+model Marks {
+  id       String @id @default(cuid())
+  positive Float
+  negative Float
+
+  question Question?
 }
