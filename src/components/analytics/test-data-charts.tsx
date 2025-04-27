@@ -1,0 +1,44 @@
+"use client";
+import useDashboardToggle, { OptionName } from "@/zustand/use-dashboard-state";
+import { ReactNode } from "react";
+import TestAccuracy from "./accuracy";
+import TestMarks from "./marks";
+import TestPerformance from "./performance";
+import TestTimeSpent from "./time-spent";
+
+const toggleOptions: { name: OptionName; component: ReactNode }[] = [
+  { name: "Marks", component: <TestMarks /> },
+  { name: "Performance", component: <TestPerformance /> },
+  { name: "Accuracy", component: <TestAccuracy /> },
+  { name: "Time Spent", component: <TestTimeSpent /> },
+];
+
+export default function TestDataCharts() {
+  const { selected, setSelected } = useDashboardToggle();
+
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4 text-center">Test Dashboard</h2>
+      <div className="flex flex-wrap gap-3 my-6">
+        {toggleOptions.map((option) => (
+          <button
+            key={option.name}
+            onClick={() => setSelected(option.name)}
+            className={`px-4 py-2 rounded-lg border text-sm font-medium cursor-pointer hover:brightness-90 transition-all
+              ${
+                selected === option.name
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-800 border-gray-300"
+              }`}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="border px-4 py-4 rounded-xl">
+        {toggleOptions.find((option) => option.name === selected)?.component}
+      </div>
+    </div>
+  );
+}
