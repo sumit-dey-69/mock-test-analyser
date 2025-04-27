@@ -26,11 +26,185 @@ datasource db {
 //   test    Test   @relation(fields: [testCode], references: [testCode], onDelete: Cascade)
 // }
 
+// model Reason {
+//   id        String  @id @default(cuid())
+//   text      String
+//   section   Section @relation(fields: [sectionId], references: [id])
+//   sectionId String
+// }
+
+// reasons         Reason[]
+
+// model Test {
+//   name              String @id
+//   testTotalDuration Int
+
+//   filters   Filters? @relation(fields: [filtersId], references: [id])
+//   filtersId String?  @unique
+
+//   sectionWiseStats SectionWiseStat[]
+//   sections         Section[]
+//   createdAt        DateTime          @default(now())
+// }
+
+// model Filters {
+//   id          String @id @default(cuid())
+//   incorrect   Int
+//   correct     Int
+//   unattempted Int
+
+//   test Test?
+// }
+
+// model SectionWiseStat {
+//   id     String @id @default(cuid())
+//   test   Test   @relation(fields: [testId], references: [name])
+//   testId String
+
+//   marksScored      Float
+//   sectionMarks     Float
+//   accuracy         Float
+//   totalQuestions   Int
+//   attemptDuration  Float
+//   correctAnswers   Int
+//   inCorrectAnswers Int
+//   unAttempted      Int
+//   name             String
+//   order            Int
+//   sectionDuration  Float
+// }
+
+// model Section {
+//   id     String @id @default(cuid())
+//   test   Test   @relation(fields: [testId], references: [name])
+//   testId String
+
+//   sectionDuration Float
+//   sectionMarks    Float
+//   name            String
+//   order           Int
+
+//   questions       Question[]
+// }
+
+// model Question {
+//   id        String  @id @default(cuid())
+//   section   Section @relation(fields: [sectionId], references: [id])
+//   sectionId String
+
+//   order       Int
+//   isAttempted Boolean
+//   isCorrect   Boolean
+//   timeTaken   Float
+
+//   marks   Marks?  @relation(fields: [marksId], references: [id])
+//   marksId String? @unique
+// }
+
+// model Marks {
+//   id       String @id @default(cuid())
+//   positive Float
+//   negative Float
+
+//   question Question?
+// }
+
+// model Test {
+//   name              String @id
+//   testTotalDuration Int
+
+//   filters   Filters? @relation(fields: [filtersId], references: [id])
+//   filtersId String?  @unique
+
+//   sectionWiseStats SectionWiseStat[]
+//   sections         Section[]
+//   createdAt        DateTime          @default(now())
+// }
+
+// model Filters {
+//   id          String @id @default(cuid())
+//   incorrect   Int
+//   correct     Int
+//   unattempted Int
+
+//   test Test?
+// }
+
+// model SectionWiseStat {
+//   id     String @id @default(cuid())
+//   test   Test   @relation(fields: [testId], references: [name])
+//   testId String
+
+//   marksScored      Float
+//   sectionMarks     Float
+//   accuracy         Float
+//   totalQuestions   Int
+//   attemptDuration  Float
+//   correctAnswers   Int
+//   inCorrectAnswers Int
+//   unAttempted      Int
+//   name             String
+//   order            Int
+//   sectionDuration  Float
+// }
+
+// model Section {
+//   id     String @id @default(cuid())
+//   test   Test   @relation(fields: [testId], references: [name])
+//   testId String
+
+//   sectionDuration Float
+//   sectionMarks    Float
+//   name            String
+//   order           Int
+
+//   questions Question[]
+// }
+
+// model Question {
+//   id        String  @id @default(cuid())
+//   section   Section @relation(fields: [sectionId], references: [id])
+//   sectionId String
+
+//   order       Int
+//   isAttempted Boolean
+//   isCorrect   Boolean
+//   timeTaken   Float
+
+//   marks           Marks?           @relation(fields: [marksId], references: [id])
+//   marksId         String?          @unique
+//   questionReasons QuestionReason[]
+// }
+
+// model Marks {
+//   id       String @id @default(cuid())
+//   positive Float
+//   negative Float
+
+//   question Question?
+// }
+
+// model Reason {
+//   id          String           @id @default(cuid())
+//   description String           @unique
+//   questions   QuestionReason[]
+// }
+
+// model QuestionReason {
+//   id         String   @id @default(cuid())
+//   question   Question @relation(fields: [questionId], references: [id])
+//   questionId String
+//   reason     Reason   @relation(fields: [reasonId], references: [id])
+//   reasonId   String
+
+//   @@unique([questionId, reasonId])
+// }
+
 model Test {
   name              String @id
   testTotalDuration Int
 
-  filters   Filters? @relation(fields: [filtersId], references: [id])
+  filters   Filters? @relation(fields: [filtersId], references: [id], onDelete: Cascade)
   filtersId String?  @unique
 
   sectionWiseStats SectionWiseStat[]
@@ -44,12 +218,12 @@ model Filters {
   correct     Int
   unattempted Int
 
-  test Test?
+  test Test? @relation
 }
 
 model SectionWiseStat {
   id     String @id @default(cuid())
-  test   Test   @relation(fields: [testId], references: [name])
+  test   Test   @relation(fields: [testId], references: [name], onDelete: Cascade)
   testId String
 
   marksScored      Float
@@ -67,7 +241,7 @@ model SectionWiseStat {
 
 model Section {
   id     String @id @default(cuid())
-  test   Test   @relation(fields: [testId], references: [name])
+  test   Test   @relation(fields: [testId], references: [name], onDelete: Cascade)
   testId String
 
   sectionDuration Float
@@ -75,12 +249,12 @@ model Section {
   name            String
   order           Int
 
-  questions Question[]
+  questions       Question[]
 }
 
 model Question {
   id        String  @id @default(cuid())
-  section   Section @relation(fields: [sectionId], references: [id])
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   sectionId String
 
   order       Int
@@ -88,8 +262,9 @@ model Question {
   isCorrect   Boolean
   timeTaken   Float
 
-  marks   Marks?  @relation(fields: [marksId], references: [id])
-  marksId String? @unique
+  marks           Marks?           @relation(fields: [marksId], references: [id])
+  marksId         String?          @unique
+  questionReasons QuestionReason[]
 }
 
 model Marks {
@@ -98,4 +273,20 @@ model Marks {
   negative Float
 
   question Question?
+}
+
+model Reason {
+  id          String           @id @default(cuid())
+  description String           @unique
+  questions   QuestionReason[]
+}
+
+model QuestionReason {
+  id         String   @id @default(cuid())
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  reason     Reason   @relation(fields: [reasonId], references: [id], onDelete: Cascade)
+  reasonId   String
+
+  @@unique([questionId, reasonId])
 }
