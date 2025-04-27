@@ -3,10 +3,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const codes = await prisma.test.findMany({
-    select: { testCode: true },
+    select: { name: true },
+    orderBy: { createdAt: 'asc' },
   });
 
-  const testCodes = codes.map((code) => code.testCode);
+  const testCodes = codes.map((code) => code.name);
 
   return NextResponse.json(testCodes);
 }
