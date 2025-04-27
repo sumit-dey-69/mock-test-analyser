@@ -2,12 +2,7 @@ import createSessionStorage from "@/utils/session-storage";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type OptionName =
-  | "Marks"
-  | "Performance"
-  | "Accuracy"
-  | "Accuracy"
-  | "Time Spent";
+export type OptionName = "Marks" | "Performance" | "Accuracy" | "Time Spent";
 
 interface DashboardToggleState {
   selected: OptionName;
