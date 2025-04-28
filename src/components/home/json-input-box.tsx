@@ -58,9 +58,8 @@ function ActionButtons() {
 
       if (res.ok && data.success) {
         setSubmitted(true);
-        setMessage("✅ Test submitted successfully!");
         setInput("");
-        setTimeout(() => 2000);
+        setMessage("✅ Test submitted successfully!");
         window.location.reload();
       } else {
         setSubmittionError(true);

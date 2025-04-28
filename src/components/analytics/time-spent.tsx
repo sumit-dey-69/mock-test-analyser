@@ -115,7 +115,7 @@ export default function TestTimeSpentChart() {
               <Line
                 type="monotone"
                 dataKey="attemptDuration"
-                name="Time Spent (s)"
+                name="Time Spent (min)"
                 stroke="#0288d1"
                 strokeWidth={2}
                 activeDot={{ r: 6 }}
