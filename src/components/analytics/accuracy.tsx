@@ -96,8 +96,9 @@ export default function TestAccuracyChart() {
               <CartesianGrid strokeDasharray="3 3" stroke="#2e2e2e" />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "#ccc", angle: -90, textAnchor: "end" }}
+                tick={{ fill: "#ccc", textAnchor: "end" }}
                 height={60}
+                angle={-90}
                 style={{ fontSize: 10 }}
               />
               <YAxis tick={{ fill: "#ccc" }} style={{ fontSize: 12 }} />
