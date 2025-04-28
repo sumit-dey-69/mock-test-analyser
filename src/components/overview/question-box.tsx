@@ -1,6 +1,6 @@
 "use client";
-
 import { formatTime } from "@/utils/function";
+import { reasons } from "@/utils/reasons";
 import { useStore } from "@/zustand/store";
 import {
   Brain,
@@ -15,19 +15,14 @@ import { twMerge } from "tailwind-merge";
 
 export default function QuestionBox() {
   const {
-    questions,
-    timeSpent,
+    currentSection,
     getCurrentQuestionNumber,
     setCurrentQuestionNumber,
     setCurrentSection,
-    currentSection,
+    questions,
+    timeSpent,
     updateQuestionReasons,
   } = useStore();
-
-  const list = questions[currentSection] || [];
-  const currentQuestionNumber = getCurrentQuestionNumber();
-  const currentTime = timeSpent[currentSection]?.[currentQuestionNumber] || 0;
-  const currentQuestion = list.find((q) => q.order === currentQuestionNumber);
 
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -35,108 +30,73 @@ export default function QuestionBox() {
     "idle"
   );
 
-  useEffect(() => {
-    setSaveStatus("idle");
-
-    if (currentQuestion?.reasons) {
-      setSelectedReasons(currentQuestion.reasons);
-    } else {
-      setSelectedReasons([]);
-    }
-  }, [currentQuestion, currentSection, currentQuestionNumber]);
-
-  const next = () => {
-    const nextNum =
-      currentQuestionNumber < list.length
-        ? currentQuestionNumber + 1
-        : currentQuestionNumber;
-    setCurrentQuestionNumber(nextNum);
-  };
-
-  const prev = () => {
-    const prevNum = currentQuestionNumber > 1 ? currentQuestionNumber - 1 : 1;
-    setCurrentQuestionNumber(prevNum);
-  };
-
   const sections = [
     { name: "mathematics", icon: <Radical /> },
     { name: "logicalReasoning", icon: <Brain /> },
     { name: "computerEnglish", icon: <Cpu /> },
   ] as const;
 
-  const reasons = [
-    "🔍 Almost there",
-    "🤦 Silly mistake",
-    "⏱️ Last-Second Error",
-    "❌ Wrong pick",
-    "📖 Misread it",
-    "🎯 Tricky Question",
-    "⏳ Time ran out",
-    "🔄 Overthought it",
-    "😵‍💫 Lost focus",
-    "🧊 Brain freeze",
-    "🖱️ Misclicked",
-    "🧩 Confused Logic",
-    "🕵️ Missed clue",
-    "🚫 Wrong approach",
-    "🔄 Lengthy approach",
-    "📏 Wrong formula",
-    "🤔 Forget formula",
-    "🧠 Forget concept",
-  ] as const;
+  const list = questions[currentSection] || [];
+  const currentQuestionNumber = getCurrentQuestionNumber();
+  const currentQuestion = list.find((q) => q.order === currentQuestionNumber);
+  const currentTime = timeSpent[currentSection]?.[currentQuestionNumber] || 0;
 
-  const toggleReason = (reason: string) => {
+  useEffect(() => {
+    setSaveStatus("idle");
+    setSelectedReasons(currentQuestion?.reasons || []);
+  }, [currentQuestion, currentSection, currentQuestionNumber]);
+
+  const toggleReason = (reason: string) =>
     setSelectedReasons((prev) =>
       prev.includes(reason)
         ? prev.filter((r) => r !== reason)
         : [...prev, reason]
     );
-  };
 
   const saveReasons = async () => {
     if (!currentQuestion?.id) return;
-
     setIsSaving(true);
-    setSaveStatus("idle");
-
     try {
-      const response = await fetch("/api/save-reasons", {
+      const res = await fetch("/api/save-reasons", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           questionId: currentQuestion.id,
           reasons: selectedReasons,
         }),
       });
-
-      if (response.ok) {
+      if (res.ok) {
         updateQuestionReasons(
           currentSection,
           currentQuestion.id,
           selectedReasons
         );
         setSaveStatus("success");
-        setTimeout(() => setSaveStatus("idle"), 2000);
-      } else {
-        setSaveStatus("error");
-        setTimeout(() => setSaveStatus("idle"), 2000);
-      }
-    } catch (error) {
+      } else setSaveStatus("error");
+    } catch {
       setSaveStatus("error");
-      setTimeout(() => setSaveStatus("idle"), 2000);
     } finally {
       setIsSaving(false);
+      goTo("next");
+      setTimeout(() => setSaveStatus("idle"), 2000);
     }
   };
 
-  return (
-    <div className="flex flex-col justify-between gap-4 border p-4 w-full">
-      <div className="w-full flex justify-between">
-        <h2 className="text-2xl">Q{currentQuestionNumber}.</h2>
-        <div className="w-[10em] font-semibold">Time Spent: {formatTime(currentTime)}s</div>
+  const goTo = (direction: "next" | "prev") => {
+    const idx =
+      direction === "next"
+        ? currentQuestionNumber + 1
+        : currentQuestionNumber - 1;
+    setCurrentQuestionNumber(Math.min(Math.max(idx, 1), list.length));
+  };
 
+  return (
+    <div className="grid grid-rows-[auto_1fr_auto] items-center gap-4 border rounded-2xl p-4 w-full">
+      <div className="flex w-full justify-between">
+        <h2 className="text-2xl">Q{currentQuestionNumber}.</h2>
+        <div className="w-[10em] font-semibold">
+          Time Spent: {formatTime(currentTime)}s
+        </div>
         <div className="w-fit space-x-1">
           {sections.map(({ name, icon }) => (
             <button
@@ -144,8 +104,10 @@ export default function QuestionBox() {
               title={name}
               onClick={() => setCurrentSection(name)}
               className={twMerge(
-                "bg-gray-700 cursor-pointer p-2 transition-opacity hover:bg-gray-800 rounded-md",
-                currentSection === name ? "opacity-100" : "opacity-40"
+                "bg-gray-700 cursor-pointer p-2 transition-opacity rounded-md",
+                currentSection === name
+                  ? "opacity-100 bg-blue-600"
+                  : "opacity-40"
               )}
             >
               {icon}
@@ -154,10 +116,8 @@ export default function QuestionBox() {
         </div>
       </div>
 
-      <div className="mb-2">
-        <h3 className="text-lg mb-2">
-          Error Analysis - Select all that apply:
-        </h3>
+      <div>
+        <h3 className="mb-2 text-lg">Select all that apply:</h3>
         <div className="flex flex-wrap">
           {reasons.map((reason) => (
             <button
@@ -165,52 +125,51 @@ export default function QuestionBox() {
               title={reason}
               onClick={() => toggleReason(reason)}
               className={twMerge(
-                "m-1 cursor-pointer p-2 transition-all hover:bg-gray-800 rounded-md",
+                "m-1 cursor-pointer rounded-md p-2 transition-all",
                 selectedReasons.includes(reason)
                   ? "bg-blue-700 text-white"
-                  : "bg-gray-700"
+                  : "bg-gray-700 hover:bg-gray-800"
               )}
             >
               {reason}
             </button>
           ))}
         </div>
-
-        <div className="mt-4 flex justify-end">
-          <button
-            onClick={saveReasons}
-            disabled={isSaving}
-            className={twMerge(
-              "px-4 py-2 rounded flex items-center gap-2",
-              saveStatus === "success"
-                ? "bg-green-600"
-                : saveStatus === "error"
-                ? "bg-red-600"
-                : "bg-blue-600 hover:bg-blue-700"
-            )}
-          >
-            <Save size={16} />
-            {saveStatus === "success"
-              ? "Saved!"
-              : saveStatus === "error"
-              ? "Failed to save"
-              : isSaving
-              ? "Saving..."
-              : "Save Reasons"}
-          </button>
-        </div>
       </div>
 
       <div className="flex justify-between">
         <button
-          onClick={prev}
-          className="px-3 py-1.5 bg-gray-800 rounded hover:brightness-125 flex items-center gap-1"
+          onClick={() => goTo("prev")}
+          className="flex cursor-pointer items-center gap-1 rounded bg-gray-800 px-3 py-1.5 hover:brightness-125"
         >
           <ChevronLeft /> Back
         </button>
+
         <button
-          onClick={next}
-          className="px-3 py-1.5 bg-gray-800 rounded hover:brightness-125 flex items-center gap-1"
+          onClick={saveReasons}
+          disabled={isSaving}
+          className={twMerge(
+            "flex items-center gap-2 px-4 py-2 rounded cursor-pointer",
+            saveStatus === "success"
+              ? "bg-green-600"
+              : saveStatus === "error"
+              ? "bg-red-600"
+              : "bg-blue-600 hover:bg-blue-700"
+          )}
+        >
+          <Save size={16} />
+          {isSaving
+            ? "Saving..."
+            : saveStatus === "success"
+            ? "Saved!"
+            : saveStatus === "error"
+            ? "Failed to save"
+            : "Save Reasons"}
+        </button>
+
+        <button
+          onClick={() => goTo("next")}
+          className="flex cursor-pointer items-center gap-1 rounded bg-gray-800 px-3 py-1.5 hover:brightness-125"
         >
           Next <ChevronRight />
         </button>

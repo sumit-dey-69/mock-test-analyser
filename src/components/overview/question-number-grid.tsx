@@ -24,7 +24,7 @@ export default function QuestionNumberGrid() {
 
   return (
     <div>
-      <div className="grid grid-cols-10 gap-2">
+      <div className="grid grid-cols-10 md:grid-cols-8 gap-3 py-2">
         {Array.from({ length: len }, (_, i) => {
           const num = i + 1;
           return (

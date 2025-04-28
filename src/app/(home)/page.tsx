@@ -48,7 +48,7 @@ export default function JsonParser() {
       <div className="grid grid-rows-[1fr_auto] gap-8 mx-auto max-w-lg">
         <div className="space-y-6">
           <h1 className="text-3xl font-bold text-center text-zinc-100">
-            JSON Parser
+            Mock Test Analyser
           </h1>
 
           <textarea
@@ -91,7 +91,7 @@ export default function JsonParser() {
                       <button
                         onClick={() => {
                           setSelectedTestCode(code);
-                          router.push(`/overview`);
+                          router.push(`/overview?testCode=${code}`);
                         }}
                         className="flex cursor-pointer items-center text-blue-400 hover:text-blue-300 transition"
                       >

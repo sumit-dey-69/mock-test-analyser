@@ -222,7 +222,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import useQuestion from "../../zustand/use-question";
+import useQuestion from "@/zustand/use-question";
 import useQuestionNumber from "../../zustand/use-question-number";
 import {
   CorrectBtn,
