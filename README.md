@@ -36,6 +36,13 @@ You can use:
 
 ### 3. Set Up the Database
 
+Create a .env file in the root directory and add the following:
+
+```bash
+DATABASE_URL="file:./dev.db"
+```
+This environment variable tells Prisma where your SQLite database is located.
+
 ```bash
 pnpm prisma db push
 ```
