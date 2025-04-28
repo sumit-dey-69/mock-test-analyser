@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📊 Mock Test Result Analyzer
 
-## Getting Started
+A platform that allows students to analyze their mock test results, track performance, and identify areas for improvement. Built with Next.js, Prisma ORM, SQLite, and TailwindCSS.
 
-First, run the development server:
+---
+
+![Next.js](https://img.shields.io/badge/Made%20with-Next.js-000?style=for-the-badge&logo=next.js)
+![Prisma](https://img.shields.io/badge/Database-Prisma-3982CE?style=for-the-badge&logo=prisma)
+![pnpm](https://img.shields.io/badge/Package%20Manager-pnpm-F69220?style=for-the-badge&logo=pnpm)
+![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)
+
+---
+
+## 🚀 Setup Instructions
+
+Follow these steps to set up the project locally:
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/sumit-dey-69/mock-test-analyser
+cd mock-test-analyser
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+<package-manager> install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can use:
 
-## Learn More
+- `npm install`
+- `pnpm install`
+- `yarn install`
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Set Up the Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm prisma db push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This command will create the `dev.db` database file from the Prisma schema.
 
-## Deploy on Vercel
+### 4. Start the Development Server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app! 🚀
+
+---
+
+# 📋 Notes
+
+- `dev.db` is **NOT committed** to Git — Prisma generates it locally.
+- If you modify the Prisma schema (`schema.prisma`), run:
+
+```bash
+pnpm prisma db push
+```
+
+again to update your database.
+
+- Make sure you have **Node.js** installed (preferably latest LTS version).
+- If you want to use **pnpm**, install it globally:
+
+```bash
+npm install -g pnpm
+```
+
+---
+
+# 📂 Project Structure
+
+```bash
+/prisma         # Prisma schema and database setup
+/app            # App Router folder for routing and pages
+/components     # Reusable UI components
+/public         # Static assets
+/zustand        # Zustand store for managing state
+/schema         # Zod schema for validating JSON input
+/utils          # Utility functions
+```
+
+---
+
+# ✨ Tech Stack
+
+- **Next.js** - React framework for building fast web applications
+- **Prisma ORM** - Database toolkit to interact with SQLite
+- **SQLite** - Lightweight database for local storage
+- **TailwindCSS** - Utility-first CSS framework for styling
+- **pnpm** - Fast package manager for faster installs
+
+---
+
+# ⚡ Quick Start
+
+```bash
+git clone https://github.com/sumit-dey-69/mock-test-analyser
+cd mock-test-analyser
+pnpm install
+pnpm prisma db push
+pnpm dev
+```
+
+---
+
+# 🖼️ Screenshot
+
+![App Screenshot 1](./public/screenshot-1.png)
+![App Screenshot 2](./public/screenshot-2.png)
+![App Screenshot 3](./public/screenshot-3.png)
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+# 📜 License
+
+This project is licensed under the MIT License.
