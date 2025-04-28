@@ -1,17 +1,14 @@
 "use client";
-
 import { parseTestData } from "@/utils/json-parser";
+import { useInputStore } from "@/zustand/use-input-store";
 import { useState } from "react";
 
-type Props = {
-  rawJson: string;
-};
-
-export default function SubmitButton({ rawJson }: Props) {
+export default function SubmitButton() {
+  const { input } = useInputStore();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!rawJson.trim()) {
+    if (!input.trim()) {
       alert("Please paste valid JSON.");
       return;
     }
@@ -19,7 +16,7 @@ export default function SubmitButton({ rawJson }: Props) {
     try {
       setLoading(true);
 
-      const json = JSON.parse(rawJson);
+      const json = JSON.parse(input);
       const parsedData = parseTestData(json);
 
       const res = await fetch("/api/submit-test", {
@@ -52,12 +49,14 @@ export default function SubmitButton({ rawJson }: Props) {
   };
 
   return (
-    <button
-      onClick={handleSubmit}
-      disabled={loading}
-      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-    >
-      {loading ? "Submitting..." : "Submit Test"}
-    </button>
+    <div className="mx-auto">
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+      >
+        {loading ? "Submitting..." : "Submit Test"}
+      </button>
+    </div>
   );
 }
