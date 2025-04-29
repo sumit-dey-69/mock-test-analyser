@@ -51,7 +51,7 @@ function TestCodeList() {
         <AnalyticsButton />
       </div>
 
-      <div className="overflow-y-auto h-64 hide-scrollbar scroll-smooth  bg-zinc-800 rounded-lg">
+      <div className="overflow-y-auto h-[15rem] hide-scrollbar scroll-smooth  bg-zinc-800 rounded-lg">
         {testCodes.length > 0 ? (
           <ul className="space-y-3">
             {testCodes.map((code) => (
