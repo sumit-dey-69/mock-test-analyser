@@ -91,10 +91,10 @@ export default function QuestionBox() {
   };
 
   return (
-    <div className="grid grid-rows-[auto_1fr_auto] items-center gap-4 border rounded-2xl p-4 w-full">
-      <div className="flex w-full justify-between">
-        <h2 className="text-2xl">Q{currentQuestionNumber}.</h2>
-        <div className="w-[10em] font-semibold">
+    <div className="grid grid-rows-[auto_1fr_auto] items-center space-y-[0.75em] border rounded-2xl p-[0.95em] w-full">
+      <div className="flex w-full items-center justify-between">
+        <h2 className="text-[1.45em]">Q{currentQuestionNumber}.</h2>
+        <div className="font-semibold">
           Time Spent: {formatTime(currentTime)}minute(s)
         </div>
         <div className="w-fit space-x-1">
@@ -104,7 +104,7 @@ export default function QuestionBox() {
               title={name}
               onClick={() => setCurrentSection(name)}
               className={twMerge(
-                "bg-gray-700 cursor-pointer p-2 transition-opacity rounded-md",
+                "bg-gray-700 cursor-pointer p-[0.5em] transition-opacity rounded-md",
                 currentSection === name
                   ? "opacity-100 bg-blue-600"
                   : "opacity-40"
@@ -116,8 +116,8 @@ export default function QuestionBox() {
         </div>
       </div>
 
-      <div>
-        <h3 className="mb-2 text-lg">Select all that apply:</h3>
+      <div className="flex flex-col gap-[0.5em]">
+        <span>Select Reasons :-</span>
         <div className="flex flex-wrap">
           {reasons.map((reason) => (
             <button
@@ -125,7 +125,7 @@ export default function QuestionBox() {
               title={reason}
               onClick={() => toggleReason(reason)}
               className={twMerge(
-                "m-1 cursor-pointer rounded-md p-2 transition-all",
+                "m-[0.25em] cursor-pointer rounded-md p-[0.5em] transition-all",
                 selectedReasons.includes(reason)
                   ? "bg-blue-700 text-white"
                   : "bg-gray-700 hover:bg-gray-800"
@@ -140,7 +140,7 @@ export default function QuestionBox() {
       <div className="flex justify-between">
         <button
           onClick={() => goTo("prev")}
-          className="flex cursor-pointer items-center gap-1 rounded bg-gray-800 px-3 py-1.5 hover:brightness-125"
+          className="flex cursor-pointer items-center gap-[0.25em] rounded bg-gray-800 px-[0.75em] py-[0.5em] hover:brightness-125"
         >
           <ChevronLeft /> Back
         </button>
@@ -149,7 +149,7 @@ export default function QuestionBox() {
           onClick={saveReasons}
           disabled={isSaving}
           className={twMerge(
-            "flex items-center gap-2 px-4 py-2 rounded cursor-pointer",
+            "flex items-center gap-[0.5em] px-[1em] py-[0.5em] rounded cursor-pointer",
             saveStatus === "success"
               ? "bg-green-600"
               : saveStatus === "error"
@@ -169,7 +169,7 @@ export default function QuestionBox() {
 
         <button
           onClick={() => goTo("next")}
-          className="flex cursor-pointer items-center gap-1 rounded bg-gray-800 px-3 py-1.5 hover:brightness-125"
+          className="flex cursor-pointer items-center gap-[0.5em] rounded bg-gray-800 px-[0.75em] py-[0.35em] hover:brightness-125"
         >
           Next <ChevronRight />
         </button>
