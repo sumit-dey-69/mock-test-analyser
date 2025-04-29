@@ -9,10 +9,6 @@ export const reasons = [
   "🔄 Overthought it",
   "😵‍💫 Lost focus",
   "🧊 Brain freeze",
-<<<<<<< HEAD
-=======
-  "🖱️ Misclicked",
->>>>>>> bdee4019a46955274a9e4fddc2b024a2a262d17f
   "🧩 Complex Question",
   "🕵️ Missed clue",
   "🚫 Wrong approach",
