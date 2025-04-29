@@ -1,18 +1,53 @@
 import { prisma } from "@/lib/prisma";
 import { formatTime } from "@/utils/function";
 import { NextRequest, NextResponse } from "next/server";
-import { format } from "path";
-
-type ChartDataPoint = {
-  name: string;
-  attemptDuration: string;
-};
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const section = searchParams.get("section") || "all";
+  const testCode = searchParams.get("testCode") || "all";
 
   try {
+    if (testCode !== "all") {
+      const test = await prisma.test.findUnique({
+        where: { name: testCode },
+        select: {
+          sections: {
+            select: {
+              name: true,
+              order: true,
+              questions: {
+                select: {
+                  id: true,
+                  order: true,
+                  timeTaken: true,
+                  section: {
+                    select: { name: true },
+                  },
+                },
+                orderBy: { order: "asc" },
+              },
+            },
+          },
+        },
+      });
+
+      if (!test) {
+        return NextResponse.json({ error: "Test not found" }, { status: 404 });
+      }
+
+      const questions = test.sections.flatMap((sectionObj) => {
+        return sectionObj.questions
+          .filter((q) => section === "all" || q.section.name === section)
+          .map((q) => ({
+            name: `Q${q.order}`,
+            attemptDuration: formatTime(q.timeTaken),
+          }));
+      });
+
+      return NextResponse.json({ chartData: questions, sections: [], testCodes: [] });
+    }
+
     const tests = await prisma.test.findMany({
       select: {
         name: true,
@@ -29,9 +64,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    const chartData: ChartDataPoint[] = tests.map((test) => {
+    const chartData = tests.map((test) => {
       const stats = test.sectionWiseStats;
-      const point: ChartDataPoint = {
+      const point = {
         name: test.name,
         attemptDuration: "",
       };
@@ -39,7 +74,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       if (section === "all") {
         point.attemptDuration = `${Math.floor(
           stats.reduce((sum, s) => sum + s.attemptDuration, 0)
-      )}`
+        )}`;
       } else {
         const s = stats.find((s) => s.name === section);
         if (s) {
@@ -51,6 +86,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     });
 
     const sectionSet = new Set<string>();
+    const testCodes = tests.map((test) => test.name);
+
     tests.forEach((test) => {
       test.sectionWiseStats.forEach((stat) => {
         sectionSet.add(stat.name);
@@ -59,7 +96,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     const sections = Array.from(sectionSet);
 
-    return NextResponse.json({ chartData, sections });
+    return NextResponse.json({ chartData, sections, testCodes });
   } catch (error) {
     console.error("Error fetching chart data:", error);
     return NextResponse.json(

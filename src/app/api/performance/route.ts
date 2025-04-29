@@ -43,13 +43,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       if (section === "all") {
         const count = stats.length || 1;
         point.correctAnswers = +(
-          stats.reduce((sum, s) => sum + s.correctAnswers, 0) / count
+          stats.reduce((sum, s) => sum + s.correctAnswers, 0)
         ).toFixed(2);
         point.inCorrectAnswers = +(
-          stats.reduce((sum, s) => sum + s.inCorrectAnswers, 0) / count
+          stats.reduce((sum, s) => sum + s.inCorrectAnswers, 0)
         ).toFixed(2);
         point.unAttempted = +(
-          stats.reduce((sum, s) => sum + s.unAttempted, 0) / count
+          stats.reduce((sum, s) => sum + s.unAttempted, 0)
         ).toFixed(2);
       } else {
         const s = stats.find((s) => s.name === section);
