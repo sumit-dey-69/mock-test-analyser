@@ -23,6 +23,8 @@ export default function TestTimeSpentChart() {
   const [chartData, setChartData] = useState<TimeSpentPoint[]>([]);
   const [sections, setSections] = useState<string[]>([]);
   const [selectedSection, setSelectedSection] = useState<string>("all");
+  const [selectedTestCode, setSelectedTestCode] = useState<string>("all");
+  const [testCodes, setTestCodes] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,12 +34,19 @@ export default function TestTimeSpentChart() {
       setError(null);
 
       try {
-        const res = await fetch(`/api/time-spent?section=${selectedSection}`);
+        const res = await fetch(
+          `/api/time-spent?section=${selectedSection}&testCode=${selectedTestCode}`
+        );
         if (!res.ok) throw new Error("Could not load time-spent data");
 
-        const { chartData: data, sections: secs } = await res.json();
+        const {
+          chartData: data,
+          sections: secs,
+          testCodes: codes,
+        } = await res.json();
         setChartData(data);
         if (secs && secs.length) setSections(secs);
+        if (codes && codes.length) setTestCodes(codes);
       } catch (err: any) {
         setError(err.message || "Unknown error");
       } finally {
@@ -46,7 +55,7 @@ export default function TestTimeSpentChart() {
     }
 
     loadData();
-  }, [selectedSection]);
+  }, [selectedSection, selectedTestCode]);
 
   return (
     <div className="bg-zinc-800 rounded-xl p-6 shadow-md space-y-6">
@@ -61,6 +70,22 @@ export default function TestTimeSpentChart() {
             {sections.map((sec) => (
               <option key={sec} value={sec}>
                 {formatCamelCase(sec)}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-3 top-3 size-4 text-zinc-400 pointer-events-none" />
+        </div>
+
+        <div className="relative w-full md:w-56">
+          <select
+            className="w-full cursor-pointer appearance-none bg-zinc-700 border border-zinc-600 text-zinc-200 rounded-lg py-2 px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={selectedTestCode}
+            onChange={(e) => setSelectedTestCode(e.target.value)}
+          >
+            <option value="all">All Tests</option>
+            {testCodes.map((code) => (
+              <option key={code} value={code}>
+                {code}
               </option>
             ))}
           </select>

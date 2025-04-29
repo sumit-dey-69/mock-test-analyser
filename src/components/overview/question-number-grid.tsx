@@ -1,6 +1,7 @@
 "use client";
 import { useStore } from "@/zustand/store";
 import QuestionNumberGridItem from "./question-number-grid-item";
+import { Loader2 } from "lucide-react";
 
 export default function QuestionNumberGrid() {
   const {
@@ -21,6 +22,13 @@ export default function QuestionNumberGrid() {
     const question = sectionQuestions.find((q) => q.order === questionOrder);
     return question?.reasons && question.reasons.length > 0;
   };
+
+  if (len === 0)
+    return (
+      <div className="flex items-center justify-center">
+        <Loader2 className="animate-spin w-8 h-8 text-blue-400" />
+      </div>
+    );
 
   return (
     <div>
