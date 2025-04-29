@@ -47,8 +47,12 @@ export default function TestTimeSpentChart() {
         setChartData(data);
         if (secs && secs.length) setSections(secs);
         if (codes && codes.length) setTestCodes(codes);
-      } catch (err: any) {
-        setError(err.message || "Unknown error");
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Unknown error");
+        }
       } finally {
         setLoading(false);
       }
@@ -140,7 +144,7 @@ export default function TestTimeSpentChart() {
               <Line
                 type="monotone"
                 dataKey="attemptDuration"
-                name="Time Spent (min)"
+                name="Time Spent (minutes)"
                 stroke="#0288d1"
                 strokeWidth={2}
                 activeDot={{ r: 6 }}

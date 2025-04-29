@@ -95,7 +95,7 @@ export default function QuestionBox() {
       <div className="flex w-full justify-between">
         <h2 className="text-2xl">Q{currentQuestionNumber}.</h2>
         <div className="w-[10em] font-semibold">
-          Time Spent: {formatTime(currentTime)}s
+          Time Spent: {formatTime(currentTime)}minute(s)
         </div>
         <div className="w-fit space-x-1">
           {sections.map(({ name, icon }) => (
