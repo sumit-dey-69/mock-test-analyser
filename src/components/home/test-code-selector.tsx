@@ -35,7 +35,7 @@ function TestCodeSelector() {
   useEffect(() => {
     if (!selectedTestCode) return;
 
-    fetch(`/api/get-all?testCode=${selectedTestCode}`)
+    fetch(`/api/get-all-data?testCode=${selectedTestCode}`)
       .then((res) => res.json())
       .then((data) => {
         const {
