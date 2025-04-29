@@ -1,4 +1,6 @@
 export const reasons = [
+  "🧠 Forgot Usage",
+  "📝 Doable, Too Long",
   "❌ Wrong pick",
   "📖 Misread it",
   "🔍 Almost there",
@@ -16,6 +18,9 @@ export const reasons = [
   "📏 Wrong formula",
   "🤔 Forgot Formula",
   "🧠 Forgot Concept",
+  "🧐 Forgot Approach",
+  "❓ Question not clear",
+  "🦁 Wildcard",
   "✔️ Right Intuition",
   "❌ Calculation Error",
   "✅ Known Answer",
