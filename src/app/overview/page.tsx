@@ -7,7 +7,7 @@ import QuestionNumberGrid from "@/components/overview/question-number-grid";
 export default function QuizPage() {
   return (
     <div className="grid grid-rows-[auto_auto_1fr] space-y-6">
-      <header className="px-5 py-2">
+      <header className="grid grid-rows-[auto_1fr] px-5 py-2">
         <BackButton />
         <TestCodeSelector />
       </header>

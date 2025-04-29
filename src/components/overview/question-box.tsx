@@ -78,16 +78,25 @@ export default function QuestionBox() {
     } finally {
       setIsSaving(false);
       goTo("next");
-      setTimeout(() => setSaveStatus("idle"), 2000);
+      setSaveStatus("idle");
     }
   };
 
   const goTo = (direction: "next" | "prev") => {
-    const idx =
+    const index =
       direction === "next"
         ? currentQuestionNumber + 1
         : currentQuestionNumber - 1;
-    setCurrentQuestionNumber(Math.min(Math.max(idx, 1), list.length));
+    setCurrentQuestionNumber(Math.min(Math.max(index, 1), list.length));
+  };
+
+  const handleNext = () => {
+    if (selectedReasons.length === 0) {
+      goTo("next");
+    } else {
+      saveReasons();
+      goTo("next");
+    }
   };
 
   return (
@@ -122,10 +131,9 @@ export default function QuestionBox() {
           {reasons.map((reason) => (
             <button
               key={reason}
-              title={reason}
               onClick={() => toggleReason(reason)}
               className={twMerge(
-                "m-[0.25em] cursor-pointer rounded-md p-[0.5em] transition-all",
+                "m-[0.25em] cursor-pointer rounded-md p-[0.5em] transition-all text-center flex-grow",
                 selectedReasons.includes(reason)
                   ? "bg-blue-700 text-white"
                   : "bg-gray-700 hover:bg-gray-800"
@@ -164,11 +172,11 @@ export default function QuestionBox() {
             ? "Saved!"
             : saveStatus === "error"
             ? "Failed to save"
-            : "Save Reasons"}
+            : "Save"}
         </button>
 
         <button
-          onClick={() => goTo("next")}
+          onClick={handleNext}
           className="flex cursor-pointer items-center gap-[0.5em] rounded bg-gray-800 px-[0.75em] py-[0.35em] hover:brightness-125"
         >
           Next <ChevronRight />

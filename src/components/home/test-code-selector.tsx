@@ -71,8 +71,8 @@ function TestCodeSelector() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:gap-2 md:justify-center items-center space-y-2">
-      <h2 className="text-2xl font-bold">Test Code</h2>
+    <div className="flex absolute space-x-[0.75em] justify-center items-center w-full">
+      <h2 className="text-[1.5em] font-bold">Test Code</h2>
       <div className="relative">
         <select
           id="test-code"
