@@ -1,13 +1,15 @@
 "use client";
-import { useTestCodeStore } from "@/zustand/use-test-code-selector";
-import { BarChart2, MessageSquarePlus, Trash2 } from "lucide-react";
+import { useTestCode } from "@/zustand/use-test-code-state";
+import { useTestCodeStore } from "@/zustand/use-test-code-selector-store";
+import { MessageSquarePlus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AnalyticsButton from "./analytics-button";
 
 function TestCodeList() {
   const router = useRouter();
-  const [testCodes, setTestCodes] = useState<string[]>([]);
+  // const [testCodes, setTestCodes] = useState<string[]>([]);
+  const { testCodes, setTestCodes, removeTestCode } = useTestCode();
   const { setSelectedTestCode } = useTestCodeStore();
 
   useEffect(() => {
@@ -30,7 +32,7 @@ function TestCodeList() {
       });
       const data = await response.json();
       if (response.ok && data.success) {
-        setTestCodes((prev) => prev.filter((code) => code !== testCode));
+        removeTestCode(testCode);
       } else {
         alert(data.error || "Failed to delete test code.");
       }

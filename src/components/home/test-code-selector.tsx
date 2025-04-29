@@ -1,5 +1,5 @@
 import { useStore } from "@/zustand/store";
-import { useTestCodeStore } from "@/zustand/use-test-code-selector";
+import { useTestCodeStore } from "@/zustand/use-test-code-selector-store";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ function TestCodeSelector() {
     url.searchParams.set("testCode", newTestCode);
     router.replace(url.toString());
   };
-  
+
   return (
     <div className="flex flex-col md:flex-row md:gap-2 md:justify-center items-center space-y-2">
       <h2 className="text-2xl font-bold">Test Code</h2>

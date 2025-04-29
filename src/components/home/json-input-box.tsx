@@ -1,6 +1,6 @@
 "use client";
 import { parseTestData } from "@/utils/json-parser";
-import { useInputStore } from "@/zustand/use-input-store";
+import { useInputStore } from "@/zustand/use-input-state";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
