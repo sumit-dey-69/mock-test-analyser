@@ -1,4 +1,3 @@
-// app/api/save-reasons/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,16 +13,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Reasons must be an array" }, { status: 400 });
     }
 
-    // Transaction to ensure atomicity
     await prisma.$transaction(async (tx) => {
-      // 1. Remove existing reasons for this question
       await tx.questionReason.deleteMany({
         where: { questionId },
       });
 
-      // 2. For each reason, ensure it exists in the DB and create relationship
       for (const reasonDescription of reasons) {
-        // Find or create the reason
         let reason = await tx.reason.findUnique({
           where: { description: reasonDescription },
         });
@@ -34,7 +29,6 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        // Create the association between question and reason
         await tx.questionReason.create({
           data: {
             questionId,

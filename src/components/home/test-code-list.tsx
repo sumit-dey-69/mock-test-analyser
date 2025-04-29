@@ -8,7 +8,6 @@ import AnalyticsButton from "./analytics-button";
 
 function TestCodeList() {
   const router = useRouter();
-  // const [testCodes, setTestCodes] = useState<string[]>([]);
   const { testCodes, setTestCodes, removeTestCode } = useTestCode();
   const { setSelectedTestCode } = useTestCodeStore();
 

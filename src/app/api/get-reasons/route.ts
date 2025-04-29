@@ -1,4 +1,3 @@
-// app/api/get-reasons/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,13 +9,11 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Get the reasons associated with this question
     const questionReasons = await prisma.questionReason.findMany({
       where: { questionId },
       include: { reason: true },
     });
 
-    // Extract the reason descriptions
     const reasons = questionReasons.map(qr => qr.reason.description);
 
     return NextResponse.json({ reasons });
