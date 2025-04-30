@@ -105,7 +105,7 @@ export default function TestAccuracyChart() {
                 angle={-90}
                 style={{ fontSize: 10 }}
               />
-              <YAxis tick={{ fill: "#ccc" }} style={{ fontSize: 12 }} />
+              <YAxis tick={{ fill: "#ccc" }} style={{ fontSize: 12 }} domain={[0, 100]} />
               <Tooltip
                 contentStyle={{
                   borderRadius: 8,
