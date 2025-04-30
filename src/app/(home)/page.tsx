@@ -4,7 +4,7 @@ import TestCodeList from "@/components/home/test-code-list";
 
 export default function JsonParser() {
   return (
-      <div className="grid gap-8 mx-auto max-w-lg">
+      <div className="grid gap-2 mx-auto max-w-lg">
         <JsonInputBox />
         <TestCodeList />
       </div>
