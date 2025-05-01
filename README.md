@@ -22,7 +22,16 @@ git clone https://github.com/sumit-dey-69/mock-test-analyser
 cd mock-test-analyser
 ```
 
-### 2. Install Dependencies
+### 2. Set Up the Database
+
+Create a .env file in the root directory and add the following:
+
+```bash
+DATABASE_URL="file:./dev.db"
+```
+This environment variable tells Prisma where your SQLite database is located.
+
+### 3. Install Dependencies
 
 ```bash
 <package-manager> install
@@ -34,20 +43,6 @@ You can use:
 - `pnpm install`
 - `yarn install`
 
-### 3. Set Up the Database
-
-Create a .env file in the root directory and add the following:
-
-```bash
-DATABASE_URL="file:./dev.db"
-```
-This environment variable tells Prisma where your SQLite database is located.
-
-```bash
-pnpm prisma db push
-```
-
-This command will create the `dev.db` database file from the Prisma schema.
 
 ### 4. Start the Development Server
 
@@ -109,6 +104,7 @@ npm install -g pnpm
 git clone https://github.com/sumit-dey-69/mock-test-analyser
 cd mock-test-analyser
 pnpm install
+pnpm dlx prisma generate
 pnpm prisma db push
 pnpm dev
 ```
