@@ -21,6 +21,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                   id: true,
                   order: true,
                   timeTaken: true,
+                  isAttempted: true,
+                  isCorrect: true,
                   section: {
                     select: { name: true },
                   },
@@ -40,7 +42,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         return sectionObj.questions
           .filter((q) => section === "all" || q.section.name === section)
           .map((q) => ({
-            name: `Q${q.order}`,
+            name: `${q.isAttempted ? (q.isCorrect ? "🟢" : "🔴") : "⚪️"} Q${q.order}`,
             attemptDuration: formatTime(q.timeTaken),
           }));
       });
@@ -56,6 +58,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           select: {
             name: true,
             attemptDuration: true,
+            correctAnswers: true,
+            inCorrectAnswers: true
           },
         },
       },
