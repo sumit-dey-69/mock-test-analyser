@@ -91,12 +91,8 @@ export default function QuestionBox() {
   };
 
   const handleNext = () => {
-    if (selectedReasons.length === 0) {
-      goTo("next");
-    } else {
       saveReasons();
       goTo("next");
-    }
   };
 
   return (
@@ -151,28 +147,6 @@ export default function QuestionBox() {
           className="flex cursor-pointer items-center gap-[0.25em] rounded bg-gray-800 px-[0.75em] py-[0.5em] hover:brightness-125"
         >
           <ChevronLeft /> Back
-        </button>
-
-        <button
-          onClick={saveReasons}
-          disabled={isSaving}
-          className={twMerge(
-            "flex items-center gap-[0.5em] px-[1em] py-[0.5em] rounded cursor-pointer",
-            saveStatus === "success"
-              ? "bg-green-600"
-              : saveStatus === "error"
-              ? "bg-red-600"
-              : "bg-blue-600 hover:bg-blue-700"
-          )}
-        >
-          <Save size={16} />
-          {isSaving
-            ? "Saving..."
-            : saveStatus === "success"
-            ? "Saved!"
-            : saveStatus === "error"
-            ? "Failed to save"
-            : "Save"}
         </button>
 
         <button
